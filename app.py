@@ -13,7 +13,7 @@ from datetime import datetime
 
 def update_menu(day):
 
-    chrome_driver_path = "/path/to/chromedriver"
+    chrome_driver_path = "/usr/bin/chromedriver"
     chrome_options = Options()
     chrome_options.add_argument("--headless")
     service = Service(chrome_driver_path)
