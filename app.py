@@ -1,19 +1,23 @@
 import json
+import pytz
 from selenium import webdriver
+from webdriver_manager.chrome import ChromeDriverManager
+from selenium.webdriver.chrome.service import Service
 from selenium.webdriver.common.by import By
 from selenium.webdriver.chrome.options import Options
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
 from fastapi import FastAPI
-import pytz
 from datetime import datetime
 
 
 def update_menu(day):
+
     chrome_options = Options()
     chrome_options.add_argument("--headless") 
-    driver = webdriver.Chrome(options=chrome_options)
-
+    service = Service(ChromeDriverManager().install())
+    driver = webdriver.Chrome(service=service, options=chrome_options)
+    
     url = f'https://www.ssms-pilani.in/{day}'
     driver.get(url)
     menu_data = {}
@@ -50,6 +54,7 @@ app = FastAPI()
 timezone = pytz.timezone("Asia/Kolkata")
 today = datetime.now(timezone).strftime("%A").lower()
 days_of_week = ["monday", "tuesday", "wednesday", "thursday", "friday", "saturday", "sunday"]
+
 
 
 @app.get("/get")
