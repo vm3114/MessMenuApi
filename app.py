@@ -15,7 +15,6 @@ def update_menu(day):
 
     chrome_options = Options()
     chrome_options.add_argument("--headless")
-    chrome_options.binary_location = "/app/.chromium/opt/google/chrome/chrome"
     service = Service(ChromeDriverManager().install())
     driver = webdriver.Chrome(service=service, options=chrome_options)
 
