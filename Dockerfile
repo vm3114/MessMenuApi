@@ -12,9 +12,11 @@ RUN wget -q -O google-chrome.deb "https://dl.google.com/linux/direct/google-chro
     dpkg -i google-chrome.deb || apt-get install -y -f && \
     rm google-chrome.deb
 
-# Install ChromeDriver that matches the installed version of Google Chrome
+# Get the installed version of Google Chrome
 RUN CHROME_VERSION=$(google-chrome --version | grep -oP '\d+\.\d+\.\d+\.\d+') && \
+    echo "Installed Chrome version: $CHROME_VERSION" && \
     CHROMEDRIVER_VERSION=$(curl -sS "https://chromedriver.storage.googleapis.com/LATEST_RELEASE_$CHROME_VERSION") && \
+    echo "ChromeDriver version: $CHROMEDRIVER_VERSION" && \
     wget -q "https://chromedriver.storage.googleapis.com/$CHROMEDRIVER_VERSION/chromedriver_linux64.zip" && \
     unzip chromedriver_linux64.zip -d /usr/bin && \
     chmod +x /usr/bin/chromedriver && \
