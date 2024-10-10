@@ -1,11 +1,20 @@
 services:
   - type: web
-    name: MessMenuApi
+    name: MessMenuApi-1
     env: python
     plan: free
     buildCommand: |
-      apt-get update && apt-get install -y wget unzip
-      wget https://dl.google.com/linux/direct/google-chrome-stable_current_amd64.deb
-      dpkg -i google-chrome-stable_current_amd64.deb || apt-get -f install -y
+  # Install ChromeDriver
+      mkdir -p /app/.chromedriver
+      wget -q "https://chromedriver.storage.googleapis.com/114.0.5735.90/chromedriver_linux64.zip"
+      unzip chromedriver_linux64.zip -d /app/.chromedriver/
+      export PATH=$PATH:/app/.chromedriver/
+
+      mkdir -p /app/.chromium
+      wget -q "https://dl.google.com/linux/direct/google-chrome-stable_current_amd64.deb"
+      dpkg -x google-chrome-stable_current_amd64.deb /app/.chromium/
+      export CHROME_BIN=/app/.chromium/opt/google/chrome/chrome
+
       pip install -r requirements.txt
+
     startCommand: uvicorn app:app --host 0.0.0.0 --port 10000
