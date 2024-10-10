@@ -12,10 +12,10 @@ RUN wget -q -O google-chrome.deb "https://dl.google.com/linux/direct/google-chro
     dpkg -i google-chrome.deb || apt-get install -y -f && \
     rm google-chrome.deb
 
-# Install specific version of ChromeDriver
-RUN CHROME_VERSION="116.0.5845.96" && \
+# Install specific version of ChromeDriver (version 114)
+RUN CHROME_VERSION="114.0.5735.90" && \
     echo "Using fixed Chrome version: $CHROME_VERSION" && \
-    CHROMEDRIVER_VERSION="116.0.5845.96" && \
+    CHROMEDRIVER_VERSION="114.0.5735.90" && \
     echo "Using fixed ChromeDriver version: $CHROMEDRIVER_VERSION" && \
     wget -q "https://chromedriver.storage.googleapis.com/$CHROMEDRIVER_VERSION/chromedriver_linux64.zip" && \
     unzip chromedriver_linux64.zip -d /usr/bin && \
