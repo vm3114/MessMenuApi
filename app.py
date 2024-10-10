@@ -1,25 +1,22 @@
+import json
 from selenium import webdriver
 from selenium.webdriver.common.by import By
 from selenium.webdriver.chrome.options import Options
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
 from fastapi import FastAPI
+import pytz
 from datetime import datetime
 
-app = FastAPI()
 
-@app.get("/")
-async def root():
-
+def update_menu(day):
     chrome_options = Options()
     chrome_options.add_argument("--headless") 
     driver = webdriver.Chrome(options=chrome_options)
 
-    url = f'https://www.ssms-pilani.in/{datetime.today().strftime("%A").lower()}'
+    url = f'https://www.ssms-pilani.in/{day}'
     driver.get(url)
-
     menu_data = {}
-
     try:
         meal_sections = WebDriverWait(driver, 10).until(
             EC.presence_of_all_elements_located((By.CSS_SELECTOR, ".flex.flex-col.justify-start.items-center.p-10.border-4.rounded-xl.text-white.border-textgreen\\/50"))
@@ -31,9 +28,58 @@ async def root():
             items_text = [item.text for item in menu_items]
             menu_data[title] = items_text
 
+        with open(f'menus/{day}.json', 'w') as file:
+            json.dump(menu_data, file)
+
     except Exception as e:
+        with open(f'menus/{day}.json', 'w') as file:
+            json.dump("", file)
         print(f"An error occurred: {e}")
 
     driver.quit()
-
     return menu_data
+
+
+def get_menu(day):
+    with open(f"menus/{day}.json", "r") as file:
+        menu = json.load(file)
+    return menu
+
+
+app = FastAPI()
+timezone = pytz.timezone("Asia/Kolkata")
+today = datetime.now(timezone).strftime("%A").lower()
+days_of_week = ["monday", "tuesday", "wednesday", "thursday", "friday", "saturday", "sunday"]
+
+
+@app.get("/get")
+@app.get("/get/{day}")
+def get_today(day: str = today):
+    return get_menu(day)
+
+
+@app.get("/update")
+@app.get("/update/{day}")
+async def update_today(day: str = today):
+    menu = update_menu(day)
+    return menu
+
+
+@app.get("/updateall")
+async def updateAll():
+    all_menu = {}
+    for day in days_of_week:
+        menu = update_menu(day)
+        all_menu[day] = menu
+    
+    return all_menu
+
+
+@app.get("/getall")
+def getAll():
+    all_menu = {}
+    for day in days_of_week:
+        menu = get_menu(day)
+        all_menu[day] = menu
+
+    return all_menu
