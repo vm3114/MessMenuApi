@@ -1,7 +1,6 @@
 FROM python:3.10
 
 # Install necessary packages
-# Install necessary packages
 RUN apt-get update && apt-get install -y \
     fonts-liberation libappindicator3-1 libasound2 libatk-bridge2.0-0 \
     libnspr4 libnss3 lsb-release xdg-utils libxss1 libdbus-glib-1-2 \
@@ -9,10 +8,9 @@ RUN apt-get update && apt-get install -y \
     rm -rf /var/lib/apt/lists/*
 
 # Install Google Chrome
-RUN CHROME_SETUP=google-chrome.deb && \
-    wget -q -O $CHROME_SETUP "https://dl.google.com/linux/direct/google-chrome-stable_current_amd64.deb" && \
-    dpkg -i $CHROME_SETUP || apt-get install -y -f && \
-    rm $CHROME_SETUP
+RUN wget -q -O google-chrome.deb "https://dl.google.com/linux/direct/google-chrome-stable_current_amd64.deb" && \
+    dpkg -i google-chrome.deb || apt-get install -y -f && \
+    rm google-chrome.deb
 
 # Install ChromeDriver that matches the installed version of Google Chrome
 RUN CHROME_VERSION=$(google-chrome --version | grep -oP '\d+\.\d+\.\d+\.\d+') && \
@@ -21,7 +19,7 @@ RUN CHROME_VERSION=$(google-chrome --version | grep -oP '\d+\.\d+\.\d+\.\d+') &&
     unzip chromedriver_linux64.zip -d /usr/bin && \
     chmod +x /usr/bin/chromedriver && \
     rm chromedriver_linux64.zip
-    
+
 # Set environment variables
 ENV LANG C.UTF-8
 ENV LC_ALL C.UTF-8
