@@ -13,9 +13,10 @@ from datetime import datetime
 
 def update_menu(day):
 
+    chrome_driver_path = "/path/to/chromedriver"
     chrome_options = Options()
     chrome_options.add_argument("--headless")
-    service = Service(ChromeDriverManager().install())
+    service = Service(chrome_driver_path)
     driver = webdriver.Chrome(service=service, options=chrome_options)
 
     url = f'https://www.ssms-pilani.in/{day}'
