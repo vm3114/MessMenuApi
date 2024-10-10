@@ -1,18 +1,12 @@
 FROM python:3.10
 
 # Install necessary packages
+# Install necessary packages
 RUN apt-get update && apt-get install -y \
     fonts-liberation libappindicator3-1 libasound2 libatk-bridge2.0-0 \
     libnspr4 libnss3 lsb-release xdg-utils libxss1 libdbus-glib-1-2 \
     curl unzip wget vim xvfb libgbm1 libu2f-udev libvulkan1 && \
     rm -rf /var/lib/apt/lists/*
-
-# Install ChromeDriver
-RUN CHROMEDRIVER_VERSION=$(curl -sS chromedriver.storage.googleapis.com/LATEST_RELEASE) && \
-    wget -q https://chromedriver.storage.googleapis.com/$CHROMEDRIVER_VERSION/chromedriver_linux64.zip && \
-    unzip chromedriver_linux64.zip -d /usr/bin && \
-    chmod +x /usr/bin/chromedriver && \
-    rm chromedriver_linux64.zip
 
 # Install Google Chrome
 RUN CHROME_SETUP=google-chrome.deb && \
@@ -20,6 +14,14 @@ RUN CHROME_SETUP=google-chrome.deb && \
     dpkg -i $CHROME_SETUP || apt-get install -y -f && \
     rm $CHROME_SETUP
 
+# Install ChromeDriver that matches the installed version of Google Chrome
+RUN CHROME_VERSION=$(google-chrome --version | grep -oP '\d+\.\d+\.\d+\.\d+') && \
+    CHROMEDRIVER_VERSION=$(curl -sS "https://chromedriver.storage.googleapis.com/LATEST_RELEASE_$CHROME_VERSION") && \
+    wget -q "https://chromedriver.storage.googleapis.com/$CHROMEDRIVER_VERSION/chromedriver_linux64.zip" && \
+    unzip chromedriver_linux64.zip -d /usr/bin && \
+    chmod +x /usr/bin/chromedriver && \
+    rm chromedriver_linux64.zip
+    
 # Set environment variables
 ENV LANG C.UTF-8
 ENV LC_ALL C.UTF-8
