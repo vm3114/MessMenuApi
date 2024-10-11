@@ -1,6 +1,5 @@
 FROM python:3.10
 
-# Install necessary packages
 RUN apt-get update && apt-get install -y \
     fonts-liberation libappindicator3-1 libasound2 libatk-bridge2.0-0 \
     libnspr4 libnss3 lsb-release xdg-utils libxss1 libdbus-glib-1-2 \
@@ -22,20 +21,19 @@ RUN CHROME_VERSION="114.0.5735.90" && \
     chmod +x /usr/bin/chromedriver && \
     rm chromedriver_linux64.zip
 
-# Set environment variables
 ENV LANG C.UTF-8
 ENV LC_ALL C.UTF-8
 ENV PYTHONUNBUFFERED=1
 ENV PATH="$PATH:/bin:/usr/bin"
 
 WORKDIR /app
-
-# Copy the application code and requirements file
 COPY . /app
 
-# Install Python dependencies
 RUN --mount=type=cache,target=/root/.cache/pip \
     pip install --no-cache-dir -r requirements.txt
+
+HEALTHCHECK --interval=30s --timeout=10s --start-period=5s --retries=3 \
+CMD curl --fail http://localhost:10000/health || exit 1
 
 # Command to run the application
 CMD ["uvicorn", "app:app", "--host", "0.0.0.0", "--port", "10000"]

@@ -20,11 +20,11 @@ def update_menu(day):
     chrome_options.add_argument("--no-sandbox")  # Disable sandboxing
     chrome_options.add_argument("--disable-dev-shm-usage")  # Overcome limited resource problems
     chrome_options.add_argument("--window-size=1920,1080")
-    
+
     service = Service(chrome_driver_path)
     driver = webdriver.Chrome(service=service, options=chrome_options)
 
-    url = f'https://www.ssms-pilani.in/{day}'
+    url = f'https://www.ssms-pilani.in/{day.lower()}'
     driver.get(url)
     menu_data = {}
     try:
@@ -38,11 +38,11 @@ def update_menu(day):
             items_text = [item.text for item in menu_items]
             menu_data[title] = items_text
 
-        with open(f'menus/{day}.json', 'w') as file:
+        with open(f'menus/{day.lower()}.json', 'w') as file:
             json.dump(menu_data, file)
 
     except Exception as e:
-        with open(f'menus/{day}.json', 'w') as file:
+        with open(f'menus/{day.lower()}.json', 'w') as file:
             json.dump("", file)
         print(f"An error occurred: {e}")
 
@@ -51,7 +51,7 @@ def update_menu(day):
 
 
 def get_menu(day):
-    with open(f"menus/{day}.json", "r") as file:
+    with open(f"menus/{day.lower()}.json", "r") as file:
         menu = json.load(file)
     return menu
 
