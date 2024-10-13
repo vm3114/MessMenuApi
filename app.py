@@ -1,4 +1,5 @@
 import pytz
+import time
 from functions import get_menu, update_menu, add_response_code
 from fastapi import FastAPI, Request
 from datetime import datetime,timedelta
@@ -37,7 +38,8 @@ def get(day: str = today):
     else:
         return err_response
     
-    print(day)
+    print(f"Local time: {time.strftime('%Y-%m-%d %H:%M:%S', time.localtime())}")
+    print(f"PYTZ time: {dtime_today}")    
     return get_menu(day)
 
 
@@ -49,8 +51,9 @@ async def update(day: str = today):
         day = day.lower()
     else:
         return err_response
-    print(day)
-
+    
+    print(f"Local time: {time.strftime('%Y-%m-%d %H:%M:%S', time.localtime())}")
+    print(f"PYTZ time: {dtime_today}")    
     return update_menu(day)
 
 
