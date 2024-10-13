@@ -1,8 +1,11 @@
 services:
   - type: web
     name: MessMenuApi
-    env: docker 
+    env: docker
     buildCommand: ""
     startCommand: ""  
     dockerfilePath: ./Dockerfile
     autoDeploy: true
+    envVars:
+      - key: TZ
+        value: "Asia/Kolkata"  # Set timezone to IST
