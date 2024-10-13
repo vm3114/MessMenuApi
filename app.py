@@ -1,10 +1,18 @@
 import pytz
 from functions import get_menu, update_menu, add_response_code
-from fastapi import FastAPI
+from fastapi import FastAPI, Request
 from datetime import datetime,timedelta
+from fastapi.templating import Jinja2Templates
+from fastapi.responses import RedirectResponse, HTMLResponse
+from fastapi.staticfiles import StaticFiles
+from fastapi.exceptions import RequestValidationError
+from starlette.exceptions import HTTPException as StarletteHTTPException
 
 
 app = FastAPI()
+templates = Jinja2Templates(directory="templates")
+app.mount("/static", StaticFiles(directory="static"), name="static")
+
 timezone = pytz.timezone("Asia/Kolkata")
 dtime_today = datetime.now(timezone)
 today = dtime_today.strftime("%A").lower()
@@ -14,17 +22,22 @@ tomorrow = dtime_tmrw.strftime("%A").lower()
 days_of_week = ["monday", "tuesday", "wednesday", "thursday", "friday", "saturday", "sunday"]
 err_response = {"response_code":2,"result":{}}  # usually for undefined query
 
+
+@app.get("/", response_class=HTMLResponse)
+async def read_html(request: Request):
+    return templates.TemplateResponse("index.html", {"request": request})
+
+
 @app.get("/get")   # /get for today, /get?day=monday for monday, /get?day=tomorrow for tomorrow
 def get(day: str = today):
     if day.lower() == "tomorrow":
         day = tomorrow
-    
     elif day.lower() in days_of_week:
         day = day.lower()
-
     else:
         return err_response
     
+    print(day)
     return get_menu(day)
 
 
@@ -32,12 +45,11 @@ def get(day: str = today):
 async def update(day: str = today):
     if day.lower() == "tomorrow":
         day = tomorrow
-    
     elif day.lower() in days_of_week:
         day = day.lower()
-
     else:
         return err_response
+    print(day)
     
     return update_menu(day)
 
@@ -86,3 +98,13 @@ def getAll(start: str = "monday", end: str = "sunday"):  # same as updateall
             i %= 7
     
     return all_menu
+
+
+@app.exception_handler(StarletteHTTPException)
+async def custom_http_exception_handler(request, exc):
+    return RedirectResponse(url="/")
+
+
+@app.exception_handler(RequestValidationError)
+async def validation_exception_handler(request, exc):
+    return RedirectResponse(url="/")

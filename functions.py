@@ -23,7 +23,7 @@ def update_menu(day):
     chrome_options.add_argument("--window-size=1920,1080")
 
     service = Service(chrome_driver_path)
-    driver = webdriver.Chrome(service=service, options=chrome_options)
+    driver = webdriver.Chrome(service=service,options=chrome_options)
 
     url = f'https://www.ssms-pilani.in/{day.lower()}'
     driver.get(url)
