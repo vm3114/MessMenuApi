@@ -20,9 +20,9 @@ You can check out the official documentation [here](https://messmenuapi.onrender
 
 #### Get menu for a certain day
 
-```http
+````http
   GET /get
-```
+````
 
 | Parameter | Type     | Description                |
 | :-------- | :------- | :------------------------- |
@@ -30,18 +30,18 @@ You can check out the official documentation [here](https://messmenuapi.onrender
 
 #### Update (from SSMS website) and return menu for a certain day
 
-```http
+````http
   GET /update
-```
+````
 
 | Parameter | Type     | Description                       |
 | :-------- | :------- | :-------------------------------- |
 | `day`      | `string` | Same as /get |
 
 #### Get/Update menu for a range of days
-```http
+````http
   GET /getall or GET /updateall
-```
+````
 
 | Parameters | Type     | Description                       |
 | :-------- | :------- | :-------------------------------- |
