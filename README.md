@@ -1,7 +1,7 @@
 
 # Mess Menu API
 
-An API that scrapes current day's mess menu from https://www.ssms-pilani.in/ and returns json data (For Bits Pilani - Pilani Campus).
+[MessMenuAPI](https://messmenuapi.onrender.com/doc) is an API that scrapes current day's mess menu from https://www.ssms-pilani.in/ and returns json data (For Bits Pilani - Pilani Campus).
 
 
 ## Documentation
@@ -38,10 +38,10 @@ pip install -r requirements.txt
 ```
 
 #### 4. Removing the service object initialization in  line 26 of `functions.py`
-change ```
+  change ```
 driver = webdriver.Chrome(service=service,options=chrome_options) ```
 
-to ```driver = webdriver.Chrome(options=chrome_options)```
+  to ```driver = webdriver.Chrome(options=chrome_options)```
 
 #### 5. Run the FastAPI Application
 ```bash   

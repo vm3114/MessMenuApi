@@ -14,11 +14,6 @@ app = FastAPI()
 templates = Jinja2Templates(directory="templates")
 app.mount("/static", StaticFiles(directory="static"), name="static")
 
-timezone = pytz.timezone("Asia/Kolkata")
-dtime_today = datetime.now(timezone)
-today = dtime_today.strftime("%A").lower()
-dtime_tmrw = dtime_today + timedelta(days=1)
-tomorrow = dtime_tmrw.strftime("%A").lower()
 
 days_of_week = ["monday", "tuesday", "wednesday", "thursday", "friday", "saturday", "sunday"]
 err_response = {"response_code":2,"result":{}}  # usually for undefined query
@@ -30,7 +25,12 @@ async def read_html(request: Request):
 
 
 @app.get("/get")   # /get for today, /get?day=monday for monday, /get?day=tomorrow for tomorrow
-def get(day: str = today):
+def get(day: str = datetime.now(pytz.timezone("Asia/Kolkata")).strftime("%A").lower()):
+
+    dtime_today = datetime.now(pytz.timezone("Asia/Kolkata"))
+    dtime_tmrw = dtime_today + timedelta(days=1)
+    tomorrow = dtime_tmrw.strftime("%A").lower()
+
     if day.lower() == "tomorrow":
         day = tomorrow
     elif day.lower() in days_of_week:
@@ -44,7 +44,12 @@ def get(day: str = today):
 
 
 @app.get("/update")   # same as get
-async def update(day: str = today):
+async def update(day: str = datetime.now(pytz.timezone("Asia/Kolkata")).strftime("%A").lower()):
+
+    dtime_today = datetime.now(pytz.timezone("Asia/Kolkata"))
+    dtime_tmrw = dtime_today + timedelta(days=1)
+    tomorrow = dtime_tmrw.strftime("%A").lower()
+    
     if day.lower() == "tomorrow":
         day = tomorrow
     elif day.lower() in days_of_week:
