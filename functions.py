@@ -1,6 +1,7 @@
+import pytz
 import json
 from selenium import webdriver
-from webdriver_manager.chrome import ChromeDriverManager
+from datetime import datetime,timedelta
 from selenium.webdriver.chrome.service import Service
 from selenium.webdriver.common.by import By
 from selenium.webdriver.chrome.options import Options
@@ -70,3 +71,13 @@ def get_menu(day):
 
     return add_response_code(menu, response_code)
 
+
+
+def get_today():
+     return datetime.now(pytz.timezone("Asia/Kolkata")).strftime("%A").lower()
+
+
+def get_tmrw():
+    dtime_today = datetime.now(pytz.timezone("Asia/Kolkata"))
+    dtime_tmrw = dtime_today + timedelta(days=1)
+    return dtime_tmrw.strftime("%A").lower()

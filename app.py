@@ -1,8 +1,5 @@
-import pytz
-import time
-from functions import get_menu, update_menu, add_response_code
-from fastapi import FastAPI, Request
-from datetime import datetime,timedelta
+from functions import get_menu, update_menu, get_today, get_tmrw
+from fastapi import FastAPI, Request, Query
 from fastapi.templating import Jinja2Templates
 from fastapi.responses import RedirectResponse, HTMLResponse
 from fastapi.staticfiles import StaticFiles
@@ -35,40 +32,40 @@ async def read_html(request: Request):
 
 
 @app.get("/get")   # /get for today, /get?day=monday for monday, /get?day=tomorrow for tomorrow
-def get(day: str = datetime.now(pytz.timezone("Asia/Kolkata")).strftime("%A").lower()):
+def get(day: str = Query(None)):
 
-    dtime_today = datetime.now(pytz.timezone("Asia/Kolkata"))
-    dtime_tmrw = dtime_today + timedelta(days=1)
-    tomorrow = dtime_tmrw.strftime("%A").lower()
+    if day is None:
+        day = get_today()
 
-    if day.lower() == "tomorrow":
-        day = tomorrow
+    elif day.lower() == "tomorrow":
+        day = get_tmrw()
+
     elif day.lower() in days_of_week:
         day = day.lower()
+
     else:
         return err_response
     
-    print(f"Local time: {time.strftime('%Y-%m-%d %H:%M:%S', time.localtime())}")
-    print(f"PYTZ time: {dtime_today}")    
+    print(f"Day: {day}")
     return get_menu(day)
 
 
 @app.get("/update")   # same as get
-async def update(day: str = datetime.now(pytz.timezone("Asia/Kolkata")).strftime("%A").lower()):
+async def update(day: str = Query(None)):
 
-    dtime_today = datetime.now(pytz.timezone("Asia/Kolkata"))
-    dtime_tmrw = dtime_today + timedelta(days=1)
-    tomorrow = dtime_tmrw.strftime("%A").lower()
-    
-    if day.lower() == "tomorrow":
-        day = tomorrow
+    if day is None:
+        day = get_today()
+
+    elif day.lower() == "tomorrow":
+        day = get_tmrw()
+
     elif day.lower() in days_of_week:
         day = day.lower()
+
     else:
         return err_response
     
-    print(f"Local time: {time.strftime('%Y-%m-%d %H:%M:%S', time.localtime())}")
-    print(f"PYTZ time: {dtime_today}")    
+    print(f"Day: {day}")   
     return update_menu(day)
 
 
