@@ -5,356 +5,356 @@
  https://github.com/ticlekiwi/API-Documentation-HTML-Template
  !-->
 
-<!DOCTYPE html>
-<html class="no-js" lang="en">
-
-<head>
-    <meta charset="utf-8">
-    <title>MessMenuApi-Docs</title>
-    <meta name="description" content="">
-    <meta name="author" content="ticlekiwi">
-
-    <meta http-equiv="cleartype" content="on">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
-    <link rel="stylesheet" href="/static/css/hightlightjs-dark.css">
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.8.0/highlight.min.js"></script>
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,300;0,400;0,500;1,300&family=Source+Code+Pro:wght@300&display=swap" rel="stylesheet"> 
-    <link rel="stylesheet" href="/static/css/style.css" media="all">
-    <script>
-        hljs.initHighlightingOnLoad();
-    </script>
-</head>
-
-<body class="one-content-column-version">
-<div class="left-menu">
-    <div class="content-logo">
-        <div class="logo">
-            <img src="/static/images/logo.png" height="32" />
-            <span>BPPC Mess Menu Api</span>
-        </div>
-        <button class="burger-menu-icon" id="button-menu-mobile">
-            <svg width="34" height="34" viewBox="0 0 100 100"><path class="line line1" d="M 20,29.000046 H 80.000231 C 80.000231,29.000046 94.498839,28.817352 94.532987,66.711331 94.543142,77.980673 90.966081,81.670246 85.259173,81.668997 79.552261,81.667751 75.000211,74.999942 75.000211,74.999942 L 25.000021,25.000058"></path><path class="line line2" d="M 20,50 H 80"></path><path class="line line3" d="M 20,70.999954 H 80.000231 C 80.000231,70.999954 94.498839,71.182648 94.532987,33.288669 94.543142,22.019327 90.966081,18.329754 85.259173,18.331003 79.552261,18.332249 75.000211,25.000058 75.000211,25.000058 L 25.000021,74.999942"></path></svg>
-        </button>
-    </div>
-    <div class="mobile-menu-closer"></div>
-    <div class="content-menu">
-        <div class="content-infos">
-            <div class="info"><b>Last Updated:</b> 14th Oct, 2024</div>
-        </div>
-        <ul>
-            <li class="scroll-to-link active" data-target="content-desc">
-                <a>Description</a>
-            </li>
-            <li class="scroll-to-link" data-target="content-get">
-                <a>Get Menu</a>
-            </li>
-            <li class="scroll-to-link" data-target="content-update">
-                <a>Update Menu</a>
-            </li>
-            <li class="scroll-to-link" data-target="content-get-update-all">
-                <a>Get & Update Multiple</a>
-            </li>
-            <li class="scroll-to-link" data-target="content-response-codes">
-                <a>Response Codes</a>
-            </li>
-            <li class="scroll-to-link" data-target="content-examples">
-                <a>Example Results</a>
-            </li>
-        </ul>
-    </div>
-</div>
-
-
-<div class="content-page">
-    <div class="content">
-        <div class="overflow-hidden content-section" id="content-desc">
-            <h1>Description</h1>
-            <p>
-                This API provides functionality to get daily mess menus for a week. It supports querying for specific days (e.g., "Monday") or for the current or next day. The API also includes batch updates and retrieval of menus for a range of days within the week.
-            </p>
-            <p>
-                This API scrapes menu from <a> https://www.ssms-pilani.in/ </a> and stores it in json files for each day of the week. These json files can be updated (using /update or /updateall). Alternatively you can get the menu directly (/get or /getall) from the json without updating from the SSMS website, which is much faster.
-            </p>
-        </div>
-        <div class="overflow-hidden content-section" id="content-get">
-            <h2>get menu</h2>
-            <p>This gets the menu from the json file of the given date and returns it.<br>
-                To get the current day's menu you need to make a GET call to the following url :<br>
-                <code class="higlighted break-word">https://messmenuapi.onrender.com/get</code>
-            </p><br>
-            <h4 style="font-size: 110%;">Query Parameters</h4><br>
-            <p> This path accepts only a <i>"day"</i> query. <br>It can take the following values: <code class="higlighted break-word">tomorrow, monday, tuesday, ..., sunday.</code><br>If no query is passed, it defaults to the current day.</p>
-            <br><h4 style="font-size: 110%;">Example Usage</h4><br>
-            <p> To fetch the next day's menu: <code class="higlighted break-word">https://messmenuapi.onrender.com/get?day=tomorrow</code> <br>To get Saturday's mess menu: <code class="higlighted break-word">https://messmenuapi.onrender.com/get?day=saturday</code>
-            </p>
-        </div>
-        <div class="overflow-hidden content-section" id="content-update">
-            <h2>Update menu</h2>
-            <p>This first scrapes the menu from the SSMS website for the given day, stores it in the appropriate json file and then returns it. Getting the menu this way takes a significantly longer amount of time.<br><br>  
-                To update and get the current day's menu you need to make a GET call to the following url :<br>
-                <code class="higlighted break-word">https://messmenuapi.onrender.com/update</code>
-            </p><br>
-            <h4 style="font-size: 110%;">Query Parameters and Usage</h4><br>
-            <p> Query parameters are the same as /get.</p>
-            <p> To update and get the next day's menu: <code class="higlighted break-word">https://messmenuapi.onrender.com/get?day=tomorrow</code> <br>To update and get Saturday's mess menu: <code class="higlighted break-word">https://messmenuapi.onrender.com/get?day=saturday</code>
-            </p>
-        </div>
-        <div class="overflow-hidden content-section" id="content-get-update-all">
-            <h2>get and update multiple menus</h2>
-            <p>These perform /get or /update actions for a range of days.<br>Response code is generated for each day in the given range, depending on the success of the operation.<br><br>
-                To get the entire week's menu you need to make a GET call to the following url :<br>
-                <code class="higlighted break-word">https://messmenuapi.onrender.com/getall</code>
-            </p><p>To update and fetch the entire week's menu you need to make a GET call to the following url :<br>
-                <code class="higlighted break-word">https://messmenuapi.onrender.com/updateall</code></p>
-                
-            </p><br>
-            <h4 style="font-size: 110%;">Query Parameters</h4><br>
-            <p> These paths accept two queries: <i>"start"</i> and <i>"end"</i>. <br>Both correspond to a day of week: <code class="higlighted break-word"> monday, tuesday, wednesday, ..., sunday.</code><br>
-            <br>You can pass either one or both or none of these queries.<br>If not passed, <i><b>start</b></i> takes the default value of <i>monday</i>, and <i>end</i> takes the default value of <i>sunday</i>.
-            <br>Both parameters are <i>inclusive</i>, i.e., getting the menus for the range: <i>start = A</i> and <i>end = B</i> would return the menus of A and B as well.
-            </p>
-            <br><h4 style="font-size: 110%;">Example Usage</h4><br>
-            <p> To get the menus between tuesday and friday, including both: <br><code class="higlighted break-word">https://messmenuapi.onrender.com/getall?start=tuesday&end=friday</code> <br>
-            <br>To update and get menus for saturday to wednesday, including both: <br><code class="higlighted break-word">https://messmenuapi.onrender.com/updateall?start=saturday&end=wednesday</code>
-            </p>
-        </div>
-        <div class="overflow-hidden content-section" id="content-response-codes">
-            <h2>Response Codes</h2>
-            <p>
-                This API uses the following response codes:
-            </p>
-            <table>
-                <thead>
-                <tr>
-                    <th>Code</th>
-                    <th>Meaning</th>
-                </tr>
-                </thead>
-                <tbody>
-                <tr>
-                    <td>0</td>
-                    <td>
-                        No error.
-                    </td>
-                </tr>
-                <tr>
-                    <td>1</td>
-                    <td>
-                        Unable to get/update menu. Usually due to the SSMS site not being updated.
-                    </td>
-                </tr>
-                <tr>
-                    <td>2</td>
-                    <td>
-                        Query parameter(s) passed are invalid.
-                    </td>
-                </tr>
-                </tbody>
-            </table>
-        </div>
-        <div class="overflow-hidden content-section" id="content-examples">
-            <h2>Example Results</h2>
-        
-            <div class="example-container">
-                <div class="example-box">
-                    <div class="example-url">http://messmenuapi.onrender.com/getall?start=sunday&end=wednesday</div>
-                    <div class="example-response">
-                        
-<code class="response-output">
-    {
-        "sunday": {
-            "response_code": 0,
-            "result": {
-            "Breakfast": [
-                "CHOICE OF EGG",
-                "CORNFLAKES",
-                "BREAD + JAM",
-                "BESAN CHILLA",
-                "GREEN CHUTNEY",
-                "TOMATO KETCHUP",
-                "CUT APPLE",
-                "TEA + COFFEE",
-                "MILK"
-            ],
-            "Lunch": [
-                "ONION SALAD",
-                "SAHI PANEER",
-                "BUTTER CHICKEN",
-                "NAAN",
-                "PULAO RICE",
-                "BOONDI RAITA"
-            ],
-            "Dinner": [
-                "GREEN SALAD",
-                "METHI MUTTER MALAI",
-                "DAL TADKA",
-                "CHAPATI",
-                "PLAIN RICE",
-                "RASAM"
-            ]
-            }
-        },
-        "monday": {
-            "response_code": 0,
-            "result": {
-            "Breakfast": [
-                "CHOICE OF EGG",
-                "CORNFLAKES",
-                "BREAD + JAM",
-                "VEG UPMA",
-                "ADRAK CHUTNEY",
-                "BANANA",
-                "TEA + COFFEE",
-                "MILK"
-            ],
-            "Lunch": [
-                "GREEN SALAD",
-                "CABBAGE FOUGHAT",
-                "RAJMA MASALA",
-                "DAL LAHSOONI",
-                "CHAPATI",
-                "PLAIN RICE",
-                "SAMBAR",
-                "ROSE LEMONADE"
-            ],
-            "Dinner": [
-                "PAPDI CHAAT",
-                "DUM ALOO",
-                "DAL MAKHANI",
-                "CHAPATI",
-                "PLAIN RICE",
-                "RASAM",
-                "GULAB JAMUN ( COCONUT PWD)"
-            ]
-            }
-        },
-        "tuesday": {
-            "response_code": 0,
-            "result": {
-            "Breakfast": [
-                "MOONG SPROUT",
-                "CORNFLAKES",
-                "BREAD + JAM",
-                "ALOO PIYAZ PARATHA",
-                "CURD",
-                "MIX PICKLE",
-                "PINEAPPLE",
-                "TEA + COFFEE",
-                "MILK"
-            ],
-            "Lunch": [
-                "MACARONI RED SAUCE",
-                "KUNDURU MASALA",
-                "VEG JALFREZI",
-                "DHABA DAL",
-                "CHAPATI",
-                "PLAIN RICE",
-                "SAMBAR",
-                "SWEET LASSI"
-            ],
-            "Dinner": [
-                "LEMON + ONION",
-                "PUMPKIN MASALA",
-                "CHOLE MASALA",
-                "PURI",
-                "JEERA RICE",
-                "TOMATO SOUP"
-            ]
-            }
-        },
-        "wednesday": {
-            "response_code": 1,
-            "result": {
-        
-            }
-        }
-        }
-</code>
-                    </div>
-                </div>
-        
-                <div class="example-box">
-                    <div class="example-url">http://messmenuapi.onrender.com/update?day=sunday</div>
-
-                    <div class="example-response" >
-                        <code class="response-output">
-    {
-    "response_code": 0,
-    "result": {
-        "Breakfast": [
-        "CHOICE OF EGG",
-        "CORNFLAKES",
-        "BREAD + JAM",
-        "BESAN CHILLA",
-        "GREEN CHUTNEY",
-        "TOMATO KETCHUP",
-        "CUT APPLE",
-        "TEA + COFFEE",
-        "MILK"
-        ],
-        "Lunch": [
-        "ONION SALAD",
-        "SAHI PANEER",
-        "BUTTER CHICKEN",
-        "NAAN",
-        "PULAO RICE",
-        "BOONDI RAITA"
-        ],
-        "Dinner": [
-        "GREEN SALAD",
-        "METHI MUTTER MALAI",
-        "DAL TADKA",
-        "CHAPATI",
-        "PLAIN RICE",
-        "RASAM"
-        ]
-    }
-    }
-                        </code>
-                    </div>
-                </div>
-            </div>
-        </div>        
-    </div>
-</div>
-<!-- Github Corner Ribbon - (Ribbon created with : http://tholman.com/github-corners/ )-->
-<a href="https://github.com/vm3114/MessMenuApi" class="github-corner" aria-label="View source on Github" title="View source on Github"><svg width="80" height="80" viewBox="0 0 250 250" style="z-index:99999; fill:#5daa76; color:#fff; position: fixed; top: 0; border: 0; right: 0;" aria-hidden="true"><path d="M0,0 L115,115 L130,115 L142,142 L250,250 L250,0 Z"></path><path d="M128.3,109.0 C113.8,99.7 119.0,89.6 119.0,89.6 C122.0,82.7 120.5,78.6 120.5,78.6 C119.2,72.0 123.4,76.3 123.4,76.3 C127.3,80.9 125.5,87.3 125.5,87.3 C122.9,97.6 130.6,101.9 134.4,103.2" fill="currentColor" style="transform-origin: 130px 106px;" class="octo-arm"></path><path d="M115.0,115.0 C114.9,115.1 118.7,116.5 119.8,115.4 L133.7,101.6 C136.9,99.2 139.9,98.4 142.2,98.6 C133.8,88.0 127.5,74.4 143.8,58.0 C148.5,53.4 154.0,51.2 159.7,51.0 C160.3,49.4 163.2,43.6 171.4,40.1 C171.4,40.1 176.1,42.5 178.8,56.2 C183.1,58.6 187.2,61.8 190.9,65.4 C194.5,69.0 197.7,73.2 200.1,77.6 C213.8,80.2 216.3,84.9 216.3,84.9 C212.7,93.1 206.9,96.0 205.4,96.6 C205.1,102.4 203.0,107.8 198.3,112.5 C181.9,128.9 168.3,122.5 157.7,114.1 C157.9,116.9 156.7,120.9 152.7,124.9 L141.0,136.5 C139.8,137.7 141.6,141.9 141.8,141.8 Z" fill="currentColor" class="octo-body"></path></svg></a>
-<style>
-    .github-corner:hover .octo-arm {
-        animation: octocat-wave 560ms ease-in-out
-    }
-
-    @keyframes octocat-wave {
-        0%,
-        100% {
-            transform: rotate(0)
-        }
-        20%,
-        60% {
-            transform: rotate(-25deg)
-        }
-        40%,
-        80% {
-            transform: rotate(10deg)
-        }
-    }
-
-    @media (max-width:500px) {
-        .github-corner:hover .octo-arm {
-            animation: none
-        }
-        .github-corner .octo-arm {
-            animation: octocat-wave 560ms ease-in-out
-        }
-    }
-    @media only screen and (max-width:680px){ .github-corner > svg { right: auto!important; left: 0!important; transform: rotate(270deg)!important;}}
-</style>
-<!-- END Github Corner Ribbon -->
-<script src="/static/js/script.js"></script>
-</body>
-
-</html>
+ <!DOCTYPE html>
+ <html class="no-js" lang="en">
+ 
+ <head>
+     <meta charset="utf-8">
+     <title>MessMenuApi-Docs</title>
+     <meta name="description" content="">
+     <meta name="author" content="ticlekiwi">
+ 
+     <meta http-equiv="cleartype" content="on">
+     <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+ 
+     <link rel="stylesheet" href="/static/css/hightlightjs-dark.css">
+     <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.8.0/highlight.min.js"></script>
+     <link rel="preconnect" href="https://fonts.googleapis.com">
+     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+     <link href="https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,300;0,400;0,500;1,300&family=Source+Code+Pro:wght@300&display=swap" rel="stylesheet"> 
+     <link rel="stylesheet" href="/static/css/style.css" media="all">
+     <script>
+         hljs.initHighlightingOnLoad();
+     </script>
+ </head>
+ 
+ <body class="one-content-column-version">
+ <div class="left-menu">
+     <div class="content-logo">
+         <div class="logo">
+             <img src="/static/images/logo.png" height="32" />
+             <span>BPPC Mess Menu Api</span>
+         </div>
+         <button class="burger-menu-icon" id="button-menu-mobile">
+             <svg width="34" height="34" viewBox="0 0 100 100"><path class="line line1" d="M 20,29.000046 H 80.000231 C 80.000231,29.000046 94.498839,28.817352 94.532987,66.711331 94.543142,77.980673 90.966081,81.670246 85.259173,81.668997 79.552261,81.667751 75.000211,74.999942 75.000211,74.999942 L 25.000021,25.000058"></path><path class="line line2" d="M 20,50 H 80"></path><path class="line line3" d="M 20,70.999954 H 80.000231 C 80.000231,70.999954 94.498839,71.182648 94.532987,33.288669 94.543142,22.019327 90.966081,18.329754 85.259173,18.331003 79.552261,18.332249 75.000211,25.000058 75.000211,25.000058 L 25.000021,74.999942"></path></svg>
+         </button>
+     </div>
+     <div class="mobile-menu-closer"></div>
+     <div class="content-menu">
+         <div class="content-infos">
+             <div class="info"><b>Last Updated:</b> 14th Oct, 2024</div>
+         </div>
+         <ul>
+             <li class="scroll-to-link active" data-target="content-desc">
+                 <a>Description</a>
+             </li>
+             <li class="scroll-to-link" data-target="content-get">
+                 <a>Get Menu</a>
+             </li>
+             <li class="scroll-to-link" data-target="content-update">
+                 <a>Update Menu</a>
+             </li>
+             <li class="scroll-to-link" data-target="content-get-update-all">
+                 <a>Get & Update Multiple</a>
+             </li>
+             <li class="scroll-to-link" data-target="content-response-codes">
+                 <a>Response Codes</a>
+             </li>
+             <li class="scroll-to-link" data-target="content-examples">
+                 <a>Example Results</a>
+             </li>
+         </ul>
+     </div>
+ </div>
+ 
+ 
+ <div class="content-page">
+     <div class="content">
+         <div class="overflow-hidden content-section" id="content-desc">
+             <h1>Description</h1>
+             <p>
+                 This API provides functionality to get daily mess menus for a week. It supports querying for specific days (e.g., "Monday") or for the current or next day. The API also includes batch updates and retrieval of menus for a range of days within the week.
+             </p>
+             <p>
+                 This API scrapes menu from <a> https://www.ssms-pilani.in/ </a> and stores it in json files for each day of the week. These json files can be updated (using /update or /updateall). Alternatively you can get the menu directly (/get or /getall) from the json without updating from the SSMS website, which is much faster.
+             </p>
+         </div>
+         <div class="overflow-hidden content-section" id="content-get">
+             <h2>get menu</h2>
+             <p>This gets the menu from the json file of the given date and returns it.<br>
+                 To get the current day's menu you need to make a GET call to the following url :<br>
+                 <code class="higlighted break-word">https://messmenuapi.onrender.com/get</code>
+             </p><br>
+             <h4 style="font-size: 110%;">Query Parameters</h4><br>
+             <p> This path accepts only a <i>"day"</i> query. <br>It can take the following values: <code class="higlighted break-word">tomorrow, monday, tuesday, ..., sunday.</code><br>If no query is passed, it defaults to the current day.</p>
+             <br><h4 style="font-size: 110%;">Example Usage</h4><br>
+             <p> To fetch the next day's menu: <code class="higlighted break-word">https://messmenuapi.onrender.com/get?day=tomorrow</code> <br>To get Saturday's mess menu: <code class="higlighted break-word">https://messmenuapi.onrender.com/get?day=saturday</code>
+             </p>
+         </div>
+         <div class="overflow-hidden content-section" id="content-update">
+             <h2>Update menu</h2>
+             <p>This first scrapes the menu from the SSMS website for the given day, stores it in the appropriate json file and then returns it. Getting the menu this way takes a significantly longer amount of time.<br><br>  
+                 To update and get the current day's menu you need to make a GET call to the following url :<br>
+                 <code class="higlighted break-word">https://messmenuapi.onrender.com/update</code>
+             </p><br>
+             <h4 style="font-size: 110%;">Query Parameters and Usage</h4><br>
+             <p> Query parameters are the same as /get.</p>
+             <p> To update and get the next day's menu: <code class="higlighted break-word">https://messmenuapi.onrender.com/get?day=tomorrow</code> <br>To update and get Saturday's mess menu: <code class="higlighted break-word">https://messmenuapi.onrender.com/get?day=saturday</code>
+             </p>
+         </div>
+         <div class="overflow-hidden content-section" id="content-get-update-all">
+             <h2>get and update multiple menus</h2>
+             <p>These perform /get or /update actions for a range of days.<br>Response code is generated for each day in the given range, depending on the success of the operation.<br><br>
+                 To get the entire week's menu you need to make a GET call to the following url :<br>
+                 <code class="higlighted break-word">https://messmenuapi.onrender.com/getall</code>
+             </p><p>To update and fetch the entire week's menu you need to make a GET call to the following url :<br>
+                 <code class="higlighted break-word">https://messmenuapi.onrender.com/updateall</code></p>
+                 
+             </p><br>
+             <h4 style="font-size: 110%;">Query Parameters</h4><br>
+             <p> These paths accept two queries: <i>"start"</i> and <i>"end"</i>. <br>Both correspond to a day of week: <code class="higlighted break-word"> monday, tuesday, wednesday, ..., sunday.</code><br>
+             <br>You can pass either one or both or none of these queries.<br>If not passed, <i><b>start</b></i> takes the default value of <i>monday</i>, and <i>end</i> takes the default value of <i>sunday</i>.
+             <br>Both parameters are <i>inclusive</i>, i.e., getting the menus for the range: <i>start = A</i> and <i>end = B</i> would return the menus of A and B as well.
+             </p>
+             <br><h4 style="font-size: 110%;">Example Usage</h4><br>
+             <p> To get the menus between tuesday and friday, including both: <br><code class="higlighted break-word">https://messmenuapi.onrender.com/getall?start=tuesday&end=friday</code> <br>
+             <br>To update and get menus for saturday to wednesday, including both: <br><code class="higlighted break-word">https://messmenuapi.onrender.com/updateall?start=saturday&end=wednesday</code>
+             </p>
+         </div>
+         <div class="overflow-hidden content-section" id="content-response-codes">
+             <h2>Response Codes</h2>
+             <p>
+                 This API uses the following response codes:
+             </p>
+             <table>
+                 <thead>
+                 <tr>
+                     <th>Code</th>
+                     <th>Meaning</th>
+                 </tr>
+                 </thead>
+                 <tbody>
+                 <tr>
+                     <td>0</td>
+                     <td>
+                         No error.
+                     </td>
+                 </tr>
+                 <tr>
+                     <td>1</td>
+                     <td>
+                         Unable to get/update menu. Usually due to the SSMS site not being updated.
+                     </td>
+                 </tr>
+                 <tr>
+                     <td>2</td>
+                     <td>
+                         Query parameter(s) passed are invalid.
+                     </td>
+                 </tr>
+                 </tbody>
+             </table>
+         </div>
+         <div class="overflow-hidden content-section" id="content-examples">
+             <h2>Example Results</h2>
+         
+             <div class="example-container">
+                 <div class="example-box">
+                     <div class="example-url">http://messmenuapi.onrender.com/getall?start=sunday&end=wednesday</div>
+                     <div class="example-response">
+                         
+ <code class="response-output">
+     {
+         "sunday": {
+             "response_code": 0,
+             "result": {
+             "Breakfast": [
+                 "CHOICE OF EGG",
+                 "CORNFLAKES",
+                 "BREAD + JAM",
+                 "BESAN CHILLA",
+                 "GREEN CHUTNEY",
+                 "TOMATO KETCHUP",
+                 "CUT APPLE",
+                 "TEA + COFFEE",
+                 "MILK"
+             ],
+             "Lunch": [
+                 "ONION SALAD",
+                 "SAHI PANEER",
+                 "BUTTER CHICKEN",
+                 "NAAN",
+                 "PULAO RICE",
+                 "BOONDI RAITA"
+             ],
+             "Dinner": [
+                 "GREEN SALAD",
+                 "METHI MUTTER MALAI",
+                 "DAL TADKA",
+                 "CHAPATI",
+                 "PLAIN RICE",
+                 "RASAM"
+             ]
+             }
+         },
+         "monday": {
+             "response_code": 0,
+             "result": {
+             "Breakfast": [
+                 "CHOICE OF EGG",
+                 "CORNFLAKES",
+                 "BREAD + JAM",
+                 "VEG UPMA",
+                 "ADRAK CHUTNEY",
+                 "BANANA",
+                 "TEA + COFFEE",
+                 "MILK"
+             ],
+             "Lunch": [
+                 "GREEN SALAD",
+                 "CABBAGE FOUGHAT",
+                 "RAJMA MASALA",
+                 "DAL LAHSOONI",
+                 "CHAPATI",
+                 "PLAIN RICE",
+                 "SAMBAR",
+                 "ROSE LEMONADE"
+             ],
+             "Dinner": [
+                 "PAPDI CHAAT",
+                 "DUM ALOO",
+                 "DAL MAKHANI",
+                 "CHAPATI",
+                 "PLAIN RICE",
+                 "RASAM",
+                 "GULAB JAMUN ( COCONUT PWD)"
+             ]
+             }
+         },
+         "tuesday": {
+             "response_code": 0,
+             "result": {
+             "Breakfast": [
+                 "MOONG SPROUT",
+                 "CORNFLAKES",
+                 "BREAD + JAM",
+                 "ALOO PIYAZ PARATHA",
+                 "CURD",
+                 "MIX PICKLE",
+                 "PINEAPPLE",
+                 "TEA + COFFEE",
+                 "MILK"
+             ],
+             "Lunch": [
+                 "MACARONI RED SAUCE",
+                 "KUNDURU MASALA",
+                 "VEG JALFREZI",
+                 "DHABA DAL",
+                 "CHAPATI",
+                 "PLAIN RICE",
+                 "SAMBAR",
+                 "SWEET LASSI"
+             ],
+             "Dinner": [
+                 "LEMON + ONION",
+                 "PUMPKIN MASALA",
+                 "CHOLE MASALA",
+                 "PURI",
+                 "JEERA RICE",
+                 "TOMATO SOUP"
+             ]
+             }
+         },
+         "wednesday": {
+             "response_code": 1,
+             "result": {
+         
+             }
+         }
+         }
+ </code>
+                     </div>
+                 </div>
+         
+                 <div class="example-box">
+                     <div class="example-url">http://messmenuapi.onrender.com/update?day=sunday</div>
+ 
+                     <div class="example-response" >
+                         <code class="response-output">
+     {
+     "response_code": 0,
+     "result": {
+         "Breakfast": [
+         "CHOICE OF EGG",
+         "CORNFLAKES",
+         "BREAD + JAM",
+         "BESAN CHILLA",
+         "GREEN CHUTNEY",
+         "TOMATO KETCHUP",
+         "CUT APPLE",
+         "TEA + COFFEE",
+         "MILK"
+         ],
+         "Lunch": [
+         "ONION SALAD",
+         "SAHI PANEER",
+         "BUTTER CHICKEN",
+         "NAAN",
+         "PULAO RICE",
+         "BOONDI RAITA"
+         ],
+         "Dinner": [
+         "GREEN SALAD",
+         "METHI MUTTER MALAI",
+         "DAL TADKA",
+         "CHAPATI",
+         "PLAIN RICE",
+         "RASAM"
+         ]
+     }
+     }
+                         </code>
+                     </div>
+                 </div>
+             </div>
+         </div>        
+     </div>
+ </div>
+ <!-- Github Corner Ribbon - (Ribbon created with : http://tholman.com/github-corners/ )-->
+ <a href="https://github.com/vm3114/MessMenuApi" class="github-corner" aria-label="View source on Github" title="View source on Github"><svg width="80" height="80" viewBox="0 0 250 250" style="z-index:99999; fill:#5daa76; color:#fff; position: fixed; top: 0; border: 0; right: 0;" aria-hidden="true"><path d="M0,0 L115,115 L130,115 L142,142 L250,250 L250,0 Z"></path><path d="M128.3,109.0 C113.8,99.7 119.0,89.6 119.0,89.6 C122.0,82.7 120.5,78.6 120.5,78.6 C119.2,72.0 123.4,76.3 123.4,76.3 C127.3,80.9 125.5,87.3 125.5,87.3 C122.9,97.6 130.6,101.9 134.4,103.2" fill="currentColor" style="transform-origin: 130px 106px;" class="octo-arm"></path><path d="M115.0,115.0 C114.9,115.1 118.7,116.5 119.8,115.4 L133.7,101.6 C136.9,99.2 139.9,98.4 142.2,98.6 C133.8,88.0 127.5,74.4 143.8,58.0 C148.5,53.4 154.0,51.2 159.7,51.0 C160.3,49.4 163.2,43.6 171.4,40.1 C171.4,40.1 176.1,42.5 178.8,56.2 C183.1,58.6 187.2,61.8 190.9,65.4 C194.5,69.0 197.7,73.2 200.1,77.6 C213.8,80.2 216.3,84.9 216.3,84.9 C212.7,93.1 206.9,96.0 205.4,96.6 C205.1,102.4 203.0,107.8 198.3,112.5 C181.9,128.9 168.3,122.5 157.7,114.1 C157.9,116.9 156.7,120.9 152.7,124.9 L141.0,136.5 C139.8,137.7 141.6,141.9 141.8,141.8 Z" fill="currentColor" class="octo-body"></path></svg></a>
+ <style>
+     .github-corner:hover .octo-arm {
+         animation: octocat-wave 560ms ease-in-out
+     }
+ 
+     @keyframes octocat-wave {
+         0%,
+         100% {
+             transform: rotate(0)
+         }
+         20%,
+         60% {
+             transform: rotate(-25deg)
+         }
+         40%,
+         80% {
+             transform: rotate(10deg)
+         }
+     }
+ 
+     @media (max-width:500px) {
+         .github-corner:hover .octo-arm {
+             animation: none
+         }
+         .github-corner .octo-arm {
+             animation: octocat-wave 560ms ease-in-out
+         }
+     }
+     @media only screen and (max-width:680px){ .github-corner > svg { right: auto!important; left: 0!important; transform: rotate(270deg)!important;}}
+ </style>
+ <!-- END Github Corner Ribbon -->
+ <script src="/static/js/script.js"></script>
+ </body>
+ 
+ </html>
