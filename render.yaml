@@ -6,6 +6,7 @@ services:
     startCommand: ""  
     dockerfilePath: ./Dockerfile
     autoDeploy: true
+    healthCheckPath: /status
     envVars:
       - key: TZ
-        value: "Asia/Kolkata"  # Set timezone to IST
+        value: "Asia/Kolkata" 
