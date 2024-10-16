@@ -117,13 +117,13 @@ def getAll(start: str = "monday", end: str = "sunday"):  # same as updateall
 
 @app.exception_handler(StarletteHTTPException)
 async def custom_http_exception_handler(request, exc):
-    if request.url.path == "/health":
+    if request.url.path == "/status":
         return exc
     return RedirectResponse(url="/doc")
 
 
 @app.exception_handler(RequestValidationError)
 async def validation_exception_handler(request, exc):
-    if request.url.path == "/health":
+    if request.url.path == "/status":
         return exc
     return RedirectResponse(url="/doc")
