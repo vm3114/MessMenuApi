@@ -26,7 +26,6 @@ days_of_week = ["monday", "tuesday", "wednesday", "thursday", "friday", "saturda
 err_response = {"response_code":2,"result":{}}  # usually for undefined query
 
 
-@app.get("/", response_class=HTMLResponse)
 @app.get("/doc", response_class=HTMLResponse)
 async def read_html(request: Request):
     return templates.TemplateResponse("index.html", {"request": request})
@@ -114,3 +113,13 @@ def getAll(start: str = "monday", end: str = "sunday"):  # same as updateall
             i %= 7
     
     return all_menu
+
+
+@app.exception_handler(StarletteHTTPException)
+async def custom_http_exception_handler(request, exc):
+    return RedirectResponse(url="/doc")
+
+
+@app.exception_handler(RequestValidationError)
+async def validation_exception_handler(request, exc):
+    return RedirectResponse(url="/doc")
