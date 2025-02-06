@@ -1,5 +1,7 @@
 import pytz
 import json
+import re
+import pandas as pd
 from selenium import webdriver
 from datetime import datetime,timedelta
 from selenium.webdriver.chrome.service import Service
@@ -7,6 +9,14 @@ from selenium.webdriver.common.by import By
 from selenium.webdriver.chrome.options import Options
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
+
+
+def format(s):
+    s = re.sub(r'\s*\(\s*', ' (', s)
+    s = re.sub(r'\s*\)', ')', s)
+    s = re.sub(r'\s+', ' ', s)
+
+    return s.strip()
 
 
 def add_response_code(data, code):
@@ -41,13 +51,13 @@ def update_menu(day):
             menu_data[title] = items_text
 
         with open(f'menus/{day.lower()}.json', 'w') as file:
-            json.dump(menu_data, file)
+            json.dump(menu_data, file, indent = 4)
         
         response_code = 0
 
     except Exception as e:
         with open(f'menus/{day.lower()}.json', 'w') as file:
-            json.dump("", file)
+            json.dump("", file, indent = 4)
         print(f"An error occurred: {e}")
         response_code = 1
 
@@ -81,3 +91,28 @@ def get_tmrw():
     dtime_today = datetime.now(pytz.timezone("Asia/Kolkata"))
     dtime_tmrw = dtime_today + timedelta(days=1)
     return dtime_tmrw.strftime("%A").lower()
+
+
+def update_excel():
+
+    today = datetime.now(pytz.timezone("Asia/Kolkata")).date()
+    df = pd.read_excel("menus/menu.xlsx", sheet_name = "Sheet1", header = None)
+    date_to_column = {pd.to_datetime(df.iloc[1, col]).date(): col for col in range(df.shape[1]) if pd.notna(df.iloc[1, col])}
+
+    for i in range(7):
+        date = today + timedelta(days = i)
+        
+        if date in date_to_column:
+            col_idx = date_to_column[date]
+            menu_items = df.iloc[:, col_idx].tolist()
+            
+            menu = {
+                "Breakfast": [format(item) for item in menu_items[3:12] if isinstance(item, str) and item.strip() and "*" not in item],
+                "Lunch": [format(item) for item in menu_items[14:22] if isinstance(item, str) and item.strip() and "*" not in item],
+                "Dinner": [format(item) for item in menu_items[24:31] if isinstance(item, str) and item.strip() and "*" not in item]
+            }
+
+            menu = {meal: items for meal, items in menu.items() if items}
+            day = date.strftime("%A").lower()
+            with open(f'menus/{day.lower()}.json', 'w') as file:
+                json.dump(menu, file, indent = 4)
