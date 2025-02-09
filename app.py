@@ -1,5 +1,5 @@
-from functions import get_menu, update_menu, get_today, get_tmrw
-from fastapi import FastAPI, Request, Query
+from functions import get_menu, update_menu, get_today, get_tmrw, update_excel
+from fastapi import FastAPI, Request, Query, File, UploadFile, HTTPException
 from fastapi.templating import Jinja2Templates
 from fastapi.responses import RedirectResponse, HTMLResponse
 from fastapi.staticfiles import StaticFiles
@@ -113,6 +113,27 @@ def getAll(start: str = "monday", end: str = "sunday"):  # same as updateall
             i %= 7
     
     return all_menu
+
+
+@app.post("/upload_excel")
+async def upload_excel(file: UploadFile = File(...)):
+    try:
+        file_location = "menus/menu.xlsx"
+        file_content = await file.read()
+
+        with open(file_location, "wb") as buffer:
+            buffer.write(file_content)
+
+        update_excel()
+        return {"response_code": 0}
+    
+    except:
+        return err_response
+
+
+@app.get("/upload_excel", response_class = HTMLResponse)
+async def upload_excel_page(request: Request):
+    return templates.TemplateResponse("upload.html", {"request": request})
 
 
 @app.exception_handler(StarletteHTTPException)
